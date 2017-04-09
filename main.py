@@ -49,12 +49,19 @@ def getSSETestData(x, y, w):
 
 def addRandomFeatures(datafile):
 	df = pd.read_csv(datafile, delim_whitespace=True, index_col=False, names=range(num_cols - 1))
-	df['14'] = [np.random.uniform(0, 100) for k in range(len(df.index))]
-	# df['15'] = [np.random.uniform(0, 250) for k in range(433)]
-	# df['16'] = [np.random.uniform(0, 500) for k in range(433)]
+	df[16] = df[13]
+	df[13] = [np.random.uniform(0, 100) for k in range(len(df.index))]
+	df[14] = [np.random.uniform(0, 250) for k in range(len(df.index))]
+	df[15] = [np.random.uniform(0, 500) for k in range(len(df.index))]
+	cols = df.columns.tolist()
+	cols.remove(16)
+	cols.append(16)
+	df = df[cols]
 
-	X = df.as_matrix(columns=range(len(df.columns) - 2))
-	Y = df.as_matrix(columns=[len(df.columns) - 2])
+	print df
+
+	X = df.as_matrix(columns=range(len(df.columns) - 1))
+	Y = df.as_matrix(columns=[len(df.columns) - 1])
 
 	return X, Y
 
@@ -72,6 +79,7 @@ def addRandomFeatures(datafile):
 # getSSETestData(x, y, new_w)
 
 X, Y = addRandomFeatures(train_data)
+# print Y
 new_w = findWeights(X, Y)
 getSSETrainData(X, Y, new_w)
 
